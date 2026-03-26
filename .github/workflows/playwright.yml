@@ -26,4 +26,4 @@ jobs:
       run: python -m playwright install --with-deps
 
     - name: Run pytest
-      run: pytest --browser webkit --headed=false
+      run: pytest --browser chromium --headed=false
