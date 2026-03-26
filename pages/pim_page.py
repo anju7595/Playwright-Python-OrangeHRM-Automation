@@ -1,5 +1,4 @@
-from playwright.sync_api import expect
-
+from playwright.sync_api import Page, expect  # <-- import Page here
 
 class PIMPage:
     def __init__(self, page: Page):
@@ -8,6 +7,8 @@ class PIMPage:
         self.first_name_input = page.locator("input[name='firstName']")
         self.last_name_input = page.locator("input[name='lastName']")
         self.save_button = page.get_by_role("button", name="Save")
+        # Success toast/message after saving
+        self.success_toast = page.locator("div.orangehrm-toast")  # adjust selector
 
     def enter_first_name(self, fname):
         self.first_name_input.fill(fname)
@@ -29,20 +30,13 @@ class PIMPage:
         # 3. Upload Photo
         self.page.locator("input[type='file']").set_input_files(photo_path)
 
-        # Wait for the network to be quiet after the upload
+        # Wait for save button to be visible and click
         self.save_button.wait_for(state="visible")
         self.save_button.click()
 
-        # 4. GUARANTEED CLICK
-        # We use 'force=True' to bypass any invisible overlays
-        # and 'button[type="submit"]' to ensure we hit the form trigger
-        # Uses the 'Name' shown in the accessibility tree (seen in your screenshot)
-
     def verify_success(self):
         try:
-            # Now self.success_message is recognized because it was defined in __init__
             expect(self.success_toast).to_be_visible(timeout=8000)
             return True
         except Exception:
-            # Catching generic Exception covers both Timeout and Assertion errors
             return False
