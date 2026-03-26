@@ -2,16 +2,21 @@ name: Playwright Tests
 
 on: [push, pull_request]
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4  # latest v4 runs on Node 24 by default
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5  # latest v5 runs on Node 24 by default
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11.x'
 
@@ -19,12 +24,36 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install playwright
+          pip install allure-pytest
 
-      - name: Install Playwright
-        run: pip install playwright
       - name: Install Playwright Browsers
         run: python -m playwright install --with-deps
 
       - name: Run Playwright tests
-        run: pytest tests/ -v
+        # We add --alluredir to catch the raw data
+        run: pytest tests/ -v --alluredir=allure-results
+        continue-on-error: true
+
+      - name: Load Allure history
+        uses: actions/checkout@v4
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build Allure Report
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        with:
+          allure_results: allure-results
+          allure_history: allure-history
+          keep_reports: 20
+
+      - name: Deploy Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
