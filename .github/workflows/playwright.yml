@@ -1,8 +1,6 @@
 name: Playwright Tests
 
 on: [push, pull_request]
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   test:
@@ -10,10 +8,10 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4  # latest v4 runs on Node 24 by default
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5  # latest v5 runs on Node 24 by default
         with:
           python-version: '3.11.x'
 
