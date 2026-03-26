@@ -1,19 +1,17 @@
 name: Playwright Tests
 on: [push, pull_request]
+
 jobs:
   test:
     runs-on: ubuntu-latest
-    # This line opts you into the newer Node.js 24 runner immediately
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4  # v4 is usually fine, but check for v5
+        # Upgrade to latest v4 sub-version or v5 if available
+        uses: actions/checkout@v4.2.2
 
       - name: Set up Python
-        # UPGRADE THIS: Move from @v4 to @v5
-        uses: actions/setup-python@v5
+        # v5.3.0+ fully supports Node 24 runners
+        uses: actions/setup-python@v5.3.0
         with:
           python-version: '3.11'
 
@@ -23,7 +21,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Install Playwright Browsers
-        run: playwright install --with-deps
+        run: npx playwright install --with-deps
 
       - name: Run Playwright tests
         run: pytest
