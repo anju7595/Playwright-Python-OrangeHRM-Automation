@@ -1,3 +1,5 @@
+import re
+
 import pytest
 from playwright.sync_api import expect
 
@@ -14,15 +16,15 @@ def test_full_user_flow(page):
     login_page.login("Admin", "admin123")
 
     # 2. Verify Dashboard Loaded
-    assert "dashboard" in page.url
+    expect(page).to_have_url(re.compile(r".*/dashboard/.*"), timeout=10000)
 
     # 3. Navigate to PIM (Personnel Information Management)
     dashboard_page.navigate_to_pim()
-    assert "pim/viewEmployeeList" in page.url
+    expect(page).to_have_url(re.compile(r".*pim/viewEmployeeList.*"))
 
     # 4. Logout
     dashboard_page.logout()
-    assert "login" in page.url
+    expect(page).to_have_url(re.compile(r".*/auth/login.*"))
 
 
 def test_invalid_login(page):
