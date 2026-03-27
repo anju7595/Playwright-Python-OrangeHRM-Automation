@@ -59,3 +59,9 @@ playwright install chromium
 * Run with Browser (Headed): pytest --headed
 
 * Run with Tracing: pytest --tracing on
+
+# 📊 Live Automation Dashboard
+View the latest automated test execution results and history here:
+👉 [Interactive Allure Report](https://anju7595.github.io/Playwright-Python-OrangeHRM-Automation/)
+
+---
