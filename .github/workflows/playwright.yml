@@ -56,7 +56,7 @@ jobs:
         if: always()
         run: |
           mkdir -p allure-history
-          ls -la allure-history
+          echo "<h1>Dummy Report</h1>" > allure-history/index.html
 
       - name: Deploy Report to GitHub Pages
         if: always()
@@ -65,3 +65,13 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
+
+      - name: Debug files
+        if: always()
+        run: |
+          echo "=== ROOT ==="
+          ls -la
+          echo "=== ALLURE RESULTS ==="
+          ls -la allure-results || true
+          echo "=== ALLURE HISTORY ==="
+          ls -la allure-history || true
