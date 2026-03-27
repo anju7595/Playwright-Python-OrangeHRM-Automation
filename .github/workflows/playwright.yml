@@ -34,52 +34,23 @@ jobs:
         run: pytest tests/ -v --alluredir=allure-results
         continue-on-error: true
 
-      - name: Load Allure history
-        uses: actions/checkout@v4
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
-
       - name: Build Allure Report
         uses: simple-elf/allure-report-action@master
         if: always()
         with:
           allure_results: allure-results
           allure_history: allure-history
-          allure_report: allure-report
           keep_reports: 20
 
-      - name: Force create report (temporary fix)
+      # Only ensure folder exists IF Allure fails
+      - name: Ensure report exists (fallback)
         if: always()
         run: |
-          mkdir -p allure-history
-          echo "<h1>Report is working</h1>" > allure-history/index.html
-
-      - name: Deploy Report to GitHub Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-history
-          force_orphan: true
-
-
-      - name: Ensure report exists
-        if: always()
-        run: |
-          mkdir -p allure-history
-          echo "<h1>Dummy Report</h1>" > allure-history/index.html
-
-      - name: Deploy Report to GitHub Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-history
+          if [ ! -d "allure-history" ] || [ -z "$(ls -A allure-history 2>/dev/null)" ]; then
+            echo "Allure report missing, creating fallback..."
+            mkdir -p allure-history
+            echo "<h1>Report not generated</h1>" > allure-history/index.html
+          fi
 
       - name: Debug files
         if: always()
@@ -90,3 +61,12 @@ jobs:
           ls -la allure-results || true
           echo "=== ALLURE HISTORY ==="
           ls -la allure-history || true
+
+      - name: Deploy Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
+          force_orphan: true
