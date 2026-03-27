@@ -15,14 +15,17 @@ This repository contains a professional-grade test automation framework built wi
 
 **🛠️ Tech Stack**
 * Language: Python 3.x
-* 
-* Framework: Playwright (Python)
-* 
+
+*Automation Tool : Playwright
+
 * Test Runner: Pytest
-* 
+
 * IDE: PyCharm
-* 
+
 * Version Control: Git
+* Reporting	 : Allure Report
+* CI/CD :	GitHub Actions
+* Pattern :	Page Object Model (POM)
 
 **📂 Project Structure**
 Plaintext
