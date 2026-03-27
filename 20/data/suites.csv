@@ -1,0 +1,7 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","21671","test_add_employee_json[user1]","tests","Fri Mar 27 09:07:36 UTC 2026","failed","Fri Mar 27 09:07:58 UTC 2026","","test_pim_data_driven","",""
+"","5128","test_valid_login","tests","Fri Mar 27 09:06:19 UTC 2026","passed","Fri Mar 27 09:06:24 UTC 2026","","test_login","",""
+"Tests the full flow of adding a new employee with a profile picture.","20028","test_add_employee_successfully","tests","Fri Mar 27 09:07:00 UTC 2026","failed","Fri Mar 27 09:07:20 UTC 2026","","PIM Module","",""
+"","28934","test_full_user_flow","tests","Fri Mar 27 09:06:25 UTC 2026","passed","Fri Mar 27 09:06:54 UTC 2026","","test_orange_hrm","",""
+"","14478","test_add_employee_json[user0]","tests","Fri Mar 27 09:07:21 UTC 2026","passed","Fri Mar 27 09:07:35 UTC 2026","","test_pim_data_driven","",""
+"","5382","test_invalid_login","tests","Fri Mar 27 09:06:54 UTC 2026","passed","Fri Mar 27 09:06:59 UTC 2026","","test_orange_hrm","",""
